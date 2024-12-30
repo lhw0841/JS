@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById('root');
+
+        // const spn = React.createElement("span" ,
+        // {
+        //     onmouseenter: ()=> console.log("mouse enter"),
+        // }, "hello, i'm a span"); //
+        // // {} : 생성시 property 설정.
+
+        // JSX 문법 (위 createelement 와 같은 기능을 함.)
+        // const Title = () => (
+        //     <h3 id="title" onMouseEnter={() => console.log('mouse enter')}>
+        //         hello, im a title
+        //     </h3>
+        // );
+
+        // const btn = React.createElement("button",
+        // {
+        //     onclick: ()=> console.log("im clicked"), // eventlistener 추가
+        // },"Click me");
+
+        // JSX 문법
+        // const Button = () => (
+        //     <button style={{ backgroundColor: 'tomato' }} onClick={() => console.log('im clicked')}>
+        //         Click me
+        //     </button>
+        // );
+
+        //const container = React.createElement("div",null,[Title,Button]);
+        function App() {
+            const [minutes, setMinutes] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {
+                setMinutes(event.target.value);
+            };
+
+            const [counter, modifier] = React.useState(0); // [value,modifier]
+            const onClick = () => {
+                modifier((current) => current + 1); // reRendering 을  컴포넌트가 바뀔때마다 컴포넌트만 새로 생성함
+            };
+
+            const reset = () => setMinutes(0);
+            const onflip = () => setFlipped((current) => !current);
+            return (
+                <div>
+                    <h3>Total clicks :{counter}</h3>
+                    <button onClick={onClick}>Click</button>
+                    <div>
+                        <h1>Super converter</h1>
+                        <label htmlFor="minutes">Minutes</label>
+                        <input
+                            value={flipped ? minutes * 60 : minutes}
+                            id="minutes"
+                            placeholder="Minutes"
+                            type="number"
+                            onChange={onChange}
+                            disabled={flipped}
+                        />
+                    </div>
+
+                    <div>
+                        <h4>You want to convert{minutes}</h4>
+                        <label htmlFor="hours">Hours</label>
+                        <input
+                            value={flipped ? minutes : Math.round(minutes / 60)}
+                            id="hours"
+                            placeholder="Hours"
+                            type="number"
+                            onChange={onChange}
+                            disabled={!flipped}
+                        />
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onflip}>Flip</button>
+                </div>
+            );
+        }
+        //// <Title /> //컴포넌트의 첫글자는 대문자여야함. 소문자일시 HTMl 로 인식
+        // <Button />
+        ReactDOM.render(<App />, root); // 위의 react element 를 유저에게 렌더링함.
+    </script>
+</html>
